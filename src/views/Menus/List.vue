@@ -14,18 +14,18 @@
                     </FWCSelect>
                 </el-form-item>
             </el-form>
-            <el-table :data="menuData" style="width: 100%">
+            <el-table :data="menuData" style="width: 100%" @row-click="queryMenu">
                 <el-table-column prop="id" label="ID">
                 </el-table-column>
-                <el-table-column prop="parentMenu" label="父菜单">
+                <el-table-column prop="parentName" label="父菜单">
                 </el-table-column>
                 <el-table-column prop="name" label="菜单名称">
                 </el-table-column>
                 <el-table-column prop="type" label="菜单类型">
                 </el-table-column>
-                <el-table-column prop="system" label="所属系统">
+                <el-table-column prop="systemName" label="所属系统">
                 </el-table-column>
-                <el-table-column prop="createDate" label="创建日期">
+                <el-table-column prop="createTime" label="创建日期">
                 </el-table-column>
             </el-table>
         </div>
@@ -35,7 +35,8 @@
 <script>
 import FWCButton from '../../components/FWCButton.vue'
 import FWCSelect from '../../components/FWCSelect.vue'
-
+import {getMenus, getMenusBySystemId} from "../../api/menu";
+import {SYSTEM_MAP} from "../../enums/enums";
 export default {
     components: {
         FWCButton,
@@ -43,48 +44,51 @@ export default {
     },
     data() {
         return {
-            btnValue: '创建用户',
-            ruleForm: [{
-
-            }],
-            selectOps: [{
-                value: '1',
-                title: '权限管理系统'
+            btnValue: '创建菜单',
+            ruleForm: {
+              name: ''
             },
-            {
-                value: '1',
-                title: '人事管理系统'
-            }],
-            menuData: [{
-                id: '1',
-                name: '信息部管理员',
-                createDate: '2025-04-02',
-            }, {
-                id: '2',
-                name: '信息部人员',
-                createDate: '2025-04-02',
-            },
-            {
-                id: '3',
-                name: '财务部管理员',
-                createDate: '2025-04-02',
-            },
-            {
-                id: '4',
-                name: '财务部人员',
-                createDate: '2025-04-02',
-            },
-            {
-                id: '5',
-                name: '行政部管理员',
-                createDate: '2025-04-02',
-            }]
+            selectOps: Object.keys(SYSTEM_MAP).map(key => ({value: key, title: SYSTEM_MAP[key]})),
+            menuData: []
         }
     },
     methods: {
         handleClicked() {
             this.$router.push({ name: 'MenusAdd' })
+        },
+        async handleOptionChange(selectedValue) {
+          console.log('选中的系统ID:', selectedValue);
+          try {
+            const res = await getMenusBySystemId(selectedValue);
+            this.menuData = res.data.map(item => ({
+              ...item,
+              createTime: new Date(item.createTime).toISOString().split('T')[0]
+            }));
+          } catch (error) {
+            console.error('查询菜单失败:', error);
+            this.$message.error('查询菜单失败，请重试');
+          }
+        },
+        queryMenu(row) {
+          this.$router.push({
+            name: 'MenusInfo',
+            params: { id: row.id }
+          })
+        },
+        async fetchMenuData() {
+            try {
+                const res = await getMenus();
+                this.menuData = res.data.map(item => ({
+                  ...item,
+                  createTime: new Date(item.createTime).toISOString().split('T')[0]
+                }));
+            } catch (error) {
+                console.log('get menus failed:', error);
+            }
         }
+    },
+    mounted() {
+        this.fetchMenuData();
     }
 }
 </script>

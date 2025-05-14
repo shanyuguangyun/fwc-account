@@ -141,27 +141,39 @@ const routes = [
         name: "MenusAdd",
         meta: { title: '新增菜单', menuHide: true },
         component: () => import('../views/Menus/Add.vue'),
-      }
+      },
+      {
+        path: "info/:id",
+        name: "MenusInfo",
+        meta: { title: '菜单详情', menuHide: true },
+        component: () => import('../views/Menus/Info.vue'),
+      },
+      {
+        path: "update/:id?",
+        name: "MenusUpdate",
+        meta: { title: '修改菜单', menuHide: true },
+        component: () => import('../views/Menus/Update.vue'),
+      },
     ],
   },
   {
-    path: "/permissions",
-    name: "Permissions",
-    meta: { title: '接口管理', name: 'Permissions', singlePage: true, icon: () => import('../icons/PermissionIcon.vue') },
-    redirect: "/permissions/add",
+    path: "/interfaces",
+    name: "Interfaces",
+    meta: { title: '接口管理', name: 'Interfaces', singlePage: true, icon: () => import('../icons/InterfaceIcon.vue') },
+    redirect: "/interfaces/list",
     component: Layout,
     children: [
       {
         path: "list",
-        name: "PermissionsList",
+        name: "InterfacesList",
         meta: { title: '接口管理' },
-        component: () => import('../views/Permissions/List.vue'),
+        component: () => import('../views/Interfaces/List.vue'),
       },
       {
         path: "add",
-        name: "PermissionsAdd",
+        name: "InterfacesAdd",
         meta: { title: '创建接口', menuHide: true },
-        component: () => import('../views/Permissions/Add.vue'),
+        component: () => import('../views/Interfaces/Add.vue'),
       }
     ],
   },

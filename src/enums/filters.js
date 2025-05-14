@@ -15,4 +15,21 @@ Vue.filter('deptUsingText', using => {
         1: '是',
     }
     return deptUsingMap[using] || '未知'
-}) 
+})
+
+Vue.filter('menuTypeText', menuType => {
+    const menuTypeMap = {
+        0: '一级菜单',
+        1: '子菜单',
+        2: '功能按钮',
+    }
+    return menuTypeMap[menuType] || '未知'
+})
+
+Vue.filter('menuStatusText', status => {
+    const menuStatusMap = {
+        0: '未启用',
+        1: '启用',
+    }
+    return menuStatusMap[status] || '未知'
+})

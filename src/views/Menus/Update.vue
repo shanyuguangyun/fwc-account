@@ -50,7 +50,7 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item>
-                    <el-button class="el-button--black" @click="createMenu('menuForm')">立即创建</el-button>
+                    <el-button class="el-button--black" @click="updateMenu('menuForm')">立即修改</el-button>
                     <el-button @click="resetMenu('menuForm')">重置</el-button>
                 </el-form-item>
             </el-form>
@@ -60,7 +60,7 @@
 
 <script>
 import FWCButton from '../../components/FWCButton.vue';
-import { createMenu } from '@/api/menu';
+import { getMenuById, updateMenu } from '@/api/menu';
 import { SYSTEM_MAP } from '@/enums/enums.js';
 
 export default {
@@ -102,18 +102,29 @@ export default {
             }
         }
     },
-    methods: {
-        async createMenu(formName) {
+      methods: {
+        async fetchMenuDetail(id) {
+          try {
+            const res = await getMenuById(id);
+            this.menuForm = {
+              ...res.data,
+              systemName: SYSTEM_MAP[res.data.systemId] || ''
+            };
+          } catch (error) {
+            console.error('获取菜单失败:', error);
+            this.$message.error('获取菜单失败，请重试');
+          }
+        },
+        async updateMenu(formName) {
           this.$refs[formName].validate(async (valid) => {
             if (valid) {
               try {
-                const response = await createMenu(this.menuForm);
-                console.log('创建成功:', response.data);
-                this.$message.success('菜单创建成功');
+                await updateMenu(this.menuForm);
+                this.$message.success('菜单更新成功');
                 this.$router.back();
               } catch (error) {
-                console.error('创建失败:', error);
-                this.$message.error('菜单创建失败，请重试');
+                console.error('更新失败:', error);
+                this.$message.error('菜单更新失败，请重试');
               }
             } else {
               console.log('表单验证失败');
@@ -136,6 +147,12 @@ export default {
         }
       }
     },
+    mounted() {
+      const id = this.$route.params.id;
+      if (id) {
+        this.fetchMenuDetail(id);
+      }
+    }
 }
 </script>
 
