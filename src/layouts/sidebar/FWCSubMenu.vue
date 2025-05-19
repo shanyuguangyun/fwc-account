@@ -89,8 +89,10 @@ export default {
     },
     created() {
         let routes = this.$router.options.routes;
+        console.log(routes);
         for (let index = 0; index < routes.length; index++) {
             const route = routes[index];
+            console.log(route)
             if(this.$route.path.startsWith(route.path)) {
                 this.routerIndex = index
             }
@@ -128,12 +130,14 @@ export default {
     },
     watch: {
         activeRouter(newValue, oldValue) {
+            console.log(newValue + ":" + oldValue);
             // 当路由发生变化时，重新计算slidebar的top值
             if (newValue !== oldValue) {
                 this.routerIndex = 0;
             }
             // 重新计算subMenus和menus
             this.subMenus = this.$router.options.routes.filter(item => `/${this.activeRouter}` == item.path);
+            console.log(this.subMenus);
         }
     }
 }

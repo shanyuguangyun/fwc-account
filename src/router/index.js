@@ -4,9 +4,9 @@ import VueRouter from 'vue-router';
 import Layout from "../layouts/Index.vue";
 
 Vue.use(VueRouter);
-const originaPush = VueRouter.prototype.push;
+const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originaPush.call(this, location).catch(err => err)
+  return originalPush.call(this, location).catch(err => err)
 }
 
 const routes = [
@@ -120,6 +120,12 @@ const routes = [
         name: "RolesInfo",
         meta: { title: '角色详情', menuHide: true },
         component: () => import('../views/Roles/Info.vue'),
+      },
+      {
+        path: "update/:id?",
+        name: "RolesUpdate",
+        meta: { title: '修改角色', menuHide: true },
+        component: () => import('../views/Roles/Update.vue'),
       }
     ],
   },
@@ -174,7 +180,19 @@ const routes = [
         name: "InterfacesAdd",
         meta: { title: '创建接口', menuHide: true },
         component: () => import('../views/Interfaces/Add.vue'),
-      }
+      },
+      {
+        path: "info/:id",
+        name: "InterfacesInfo",
+        meta: { title: '接口详情', menuHide: true },
+        component: () => import('../views/Interfaces/Info.vue'),
+      },
+      {
+        path: "update/:id?",
+        name: "InterfacesUpdate",
+        meta: { title: '修改接口', menuHide: true },
+        component: () => import('../views/Interfaces/Update.vue'),
+      },
     ],
   },
   {

@@ -50,6 +50,8 @@ export default {
 .sidebar-wrapper {
     /* 固定宽度 */
     width: 230px;
+    min-width: 230px;
+    max-width: 230px;
     /* 使菜单栏在滚动时保持固定 */
     position: sticky;
     top: 0;

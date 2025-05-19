@@ -1,12 +1,12 @@
 <template>
     <div class="index-page">
-        RolesQuery page
+        PermissionQuery page
     </div>
 </template>
 
 <script>
 export default {
-    name: 'RolesQuery'
+    name: 'PermissionsQuery'
 }
 </script>
 

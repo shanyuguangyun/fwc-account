@@ -31,9 +31,9 @@ export function updateMenu(data) {
     });
 }
 
-export function getMenusBySystemId(systemId) {
+export function getMenusByNameAndSystemId(systemId,name) {
     return request({
-        url: `/menus/by-system-id?systemId=${systemId}`,
+        url: `/menus/search?systemId=${systemId}&name=${name}`,
         method: 'get'
     });
 }

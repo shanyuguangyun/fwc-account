@@ -9,15 +9,12 @@
                 size="mini">
                 <el-form-item label="所属系统" prop="systemId">
                     <el-select v-model="menuForm.systemId" placeholder="请选择系统">
-                        <el-option label="人事管理" value="0"></el-option>
-                        <el-option label="财务薪资" value="1"></el-option>
+                        <el-option v-for="(t,i) in systemList" :key="i" :label="t.label" :value="t.value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="父菜单" prop="parentMenu">
                     <el-select v-model="menuForm.parentMenu" placeholder="请选择父菜单">
-                        <el-option label="无" value=""></el-option>
-                        <el-option label="人事管理" value="renshiguanli"></el-option>
-                        <el-option label="财务管理" value="caiwuguanli"></el-option>
+                      <el-option v-for="(t,i) in parentMenuList" :key="i" :label="t.label" :value="t.value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="菜单名称" prop="name">
@@ -27,9 +24,7 @@
                 </el-form-item>
                 <el-form-item label="菜单类型" prop="type" width="100px">
                     <el-radio-group v-model="menuForm.type">
-                        <el-radio label="0">一级菜单</el-radio>
-                        <el-radio label="1">子菜单</el-radio>
-                        <el-radio label="2">功能按钮</el-radio>
+                      <el-radio v-for="(t,i) in menuTypeList" :key="i" :label="t.value">{{t.label}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="排序" prop="sort">
@@ -40,8 +35,7 @@
 
                 <el-form-item label="状态" prop="status">
                   <el-select v-model="menuForm.status" placeholder="请选择状态">
-                    <el-option label="启用" value="1"></el-option>
-                    <el-option label="禁用" value="0"></el-option>
+                    <el-option v-for="(t,i) in menuStatusList" :key="i" :label="t.label" :value="t.value"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="备注" prop="description">
@@ -61,20 +55,37 @@
 <script>
 import FWCButton from '../../components/FWCButton.vue';
 import { createMenu } from '@/api/menu';
-import { SYSTEM_MAP } from '@/enums/enums.js';
+import {MENU_STATUS_MAP, MENU_TYPE_MAP, SYSTEM_MAP} from '@/enums/enums.js';
 
 export default {
     components: {
         FWCButton
     },
     data() {
-        return {
+      let parentDefaultMenu = [{value: '', label: '无'}];
+      Object.keys(MENU_TYPE_MAP).forEach(key => {
+        parentDefaultMenu.push({ value: parseInt(key), label: MENU_TYPE_MAP[key] });
+      });
+      return {
+            systemList: Object.keys(SYSTEM_MAP).map((key) => ({
+              label: SYSTEM_MAP[key],
+              value: parseInt(key)
+            })),
+            parentMenuList: parentDefaultMenu,
+            menuTypeList: Object.keys(MENU_TYPE_MAP).map((key) => ({
+              label: MENU_TYPE_MAP[key],
+              value: parseInt(key)
+            })),
+            menuStatusList: Object.keys(MENU_STATUS_MAP).map((key) => ({
+              label: MENU_STATUS_MAP[key],
+              value: key
+            })),
             menuForm: {
-                systemId: '0',
+                systemId: 0,
                 systemName: '',
                 parentMenu: '',
                 name: '',
-                type: '0',
+                type: 0,
                 sort: 0,
                 icon: '',
                 url: '',
