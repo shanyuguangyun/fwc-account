@@ -34,13 +34,13 @@ const routes = [
       {
         path: "list",
         name: "UsersList",
-        meta: { title: '用户管理' },
+        meta: { title: '用户管理', routeIndex: 0 },
         component: () => import('../views/Users/List.vue'),
       },
       {
         path: "query",
         name: "UsersQuery",
-        meta: { title: '用户跟踪' },
+        meta: { title: '用户跟踪', routeIndex: 1 },
         component: () => import('../views/Users/Query.vue'),
       },
       {
@@ -67,13 +67,13 @@ const routes = [
       {
         path: "list",
         name: "DeptsList",
-        meta: { title: '部门管理' },
+        meta: { title: '部门管理', routeIndex: 0 },
         component: () => import('../views/Depts/List.vue'),
       },
       {
         path: "query",
         name: "DeptsQuery",
-        meta: { title: '部门查询' },
+        meta: { title: '部门查询', routeIndex: 1 },
         component: () => import('../views/Depts/Query.vue'),
       },
       {
@@ -100,13 +100,13 @@ const routes = [
       {
         path: "list",
         name: "RolesList",
-        meta: { title: '角色管理' },
+        meta: { title: '角色管理', routeIndex: 0 },
         component: () => import('../views/Roles/List.vue'),
       },
       {
         path: "query",
         name: "RolesQuery",
-        meta: { title: '查询角色' },
+        meta: { title: '查询角色', routeIndex: 1 },
         component: () => import('../views/Roles/Query.vue'),
       },
       {
@@ -139,7 +139,7 @@ const routes = [
       {
         path: "list",
         name: "MenusList",
-        meta: { title: '菜单管理' },
+        meta: { title: '菜单管理', routeIndex: 0 },
         component: () => import('../views/Menus/List.vue'),
       },
       {

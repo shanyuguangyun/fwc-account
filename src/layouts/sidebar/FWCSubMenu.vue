@@ -88,15 +88,7 @@ export default {
         activeRouter: String
     },
     created() {
-        let routes = this.$router.options.routes;
-        console.log(routes);
-        for (let index = 0; index < routes.length; index++) {
-            const route = routes[index];
-            console.log(route)
-            if(this.$route.path.startsWith(route.path)) {
-                this.routerIndex = index
-            }
-        }
+         this.routerIndex = this.$route.meta.routeIndex;
     },
     data() {
         return {
@@ -130,7 +122,6 @@ export default {
     },
     watch: {
         activeRouter(newValue, oldValue) {
-            console.log(newValue + ":" + oldValue);
             // 当路由发生变化时，重新计算slidebar的top值
             if (newValue !== oldValue) {
                 this.routerIndex = 0;
