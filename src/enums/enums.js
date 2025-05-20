@@ -37,3 +37,8 @@ export const ROLE_STATUS_MAP = {
     '1': '启用',
     '0': '禁用'
 };
+
+export const DEPT_STATUS_MAP = {
+    '1': '启用',
+    '0': '禁用'
+};

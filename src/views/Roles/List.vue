@@ -25,7 +25,7 @@
             {{ scope.row.status | roleStatusText }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="描述">
+        <el-table-column prop="description" label="描述">
         </el-table-column>
         <el-table-column prop="createTime" label="创建日期">
         </el-table-column>

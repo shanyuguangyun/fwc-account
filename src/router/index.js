@@ -87,6 +87,12 @@ const routes = [
         name: "DeptsInfo",
         meta: { title: '部门详情', menuHide: true },
         component: () => import('../views/Depts/Info.vue'),
+      },
+      {
+        path: "update/:id?",
+        name: "DeptsUpdate",
+        meta: { title: '修改部门', menuHide: true },
+        component: () => import('../views/Depts/Update.vue'),
       }
     ],
   },
