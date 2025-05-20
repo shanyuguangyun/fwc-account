@@ -1,117 +1,165 @@
 <template>
-    <div class="user_info-container">
-        <div class="user_info-title">
-            <h4>用户详情</h4>
-            <FWCButton :btnValue=btnValue @button-click="handleClicked"></FWCButton>
-        </div>
-        <div class="user_info-data">
-            <el-descriptions class="margin-top" :column="2" :size="size" border>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-user"></i>
-                        ID
-                    </template>
-                    {{ userData.id }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-user"></i>
-                        用户名
-                    </template>
-                    {{ userData.name }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-user"></i>
-                        性别
-                    </template>
-                    {{ userData.gender }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-mobile-phone"></i>
-                        手机号
-                    </template>
-                    {{ userData.phone }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-location-outline"></i>
-                        部门
-                    </template>
-                    {{ userData.dept }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-tickets"></i>
-                        岗位
-                    </template>
-                    {{ userData.position }}
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-tickets"></i>
-                        入职日期
-                    </template>
-                    {{ userData.entryDate }}
-                </el-descriptions-item>
-                <el-descriptions-item :span="24">
-                    <template slot="label">
-                        <i class="el-icon-office-building"></i>
-                        联系地址
-                    </template>
-                    {{ userData.address }}
-                </el-descriptions-item>
-                <el-descriptions-item :span="24">
-                    <template slot="label">
-                        <i class="el-icon-office-building"></i>
-                        备注
-                    </template>
-                    {{ userData.desc }}
-                </el-descriptions-item>
-            </el-descriptions>
-        </div>
+  <div class="user_info-container">
+    <div class="user_info-title">
+      <h4>用户详情</h4>
+      <div>
+        <FWCButton :btnValue=btnUpdate @button-click="handleUpdate" style="margin-right: 10px"></FWCButton>
+        <FWCButton :btnValue=btnBack @button-click="handleClicked"></FWCButton>
+      </div>
     </div>
+    <div class="user_info-data">
+      <el-descriptions class="margin-top" :column="1"  border>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            ID
+          </template>
+          {{ userData.id }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            用户名称
+          </template>
+          {{ userData.name }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            性别
+          </template>
+          {{ userData.gender }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            邮箱
+          </template>
+          {{ userData.email }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            部门
+          </template>
+          {{ userData.deptName }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            岗位
+          </template>
+          {{ userData.position }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            住址
+          </template>
+          {{ userData.address }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            出生日期
+          </template>
+          {{ userData.birthday }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            入职日期
+          </template>
+          {{ userData.entryDate }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            创建日期
+          </template>
+          {{ userData.createTime }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            备注
+          </template>
+          {{ userData.mark }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            状态
+          </template>
+          {{ userData.status | userStatusText }}
+        </el-descriptions-item>
+      </el-descriptions>
+    </div>
+  </div>
 </template>
 
 <script>
 import FWCButton from '../../components/FWCButton.vue'
+import { getUserById } from '@/api/user'
 export default {
-    components: {
-        FWCButton
-    },
-    data() {
-        return {
-            btnValue: '返回',
-            userData: {
-                id: '1',
-                name: '林说',
-                gender: '男',
-                phone: '17521279986',
-                dept: '信息部',
-                position: '信息工程师',
-                entryDate: '2020-02-12',
-                address: '广州市南沙区进港大道碧桂园2栋1909',
-                desc: '公司提供交通补贴，提供住宿'
-            }
-        }
-    },
-    methods: {
-        handleClicked() {
-            this.$router.back();
-        }
+  components: {
+    FWCButton
+  },
+  data() {
+    return {
+      btnUpdate: '修改',
+      btnBack: '返回',
+      userData: {
+        id: 0,
+        name: '',
+        type: 0,
+        status: '0',
+        description: '',
+        createTime: '',
+        updateTime: '',
+      }
     }
+  },
+  methods: {
+    handleClicked() {
+      this.$router.back();
+    },
+    handleUpdate() {
+      this.$router.push({ name: 'UsersUpdate', params: { id: this.$route.params.id } })
+    },
+    async fetchUserDetail(id) {
+      try {
+        const res = await getUserById(id);
+        this.userData = {
+          ...res.data,
+          // 格式化时间（可选）
+          entryDate: res.data.entryDate ? new Date(res.data.entryDate).toISOString().split('T')[0] : '',
+          birthday: res.data.birthday ? new Date(res.data.birthday).toISOString().split('T')[0] : '',
+          createTime: res.data.createTime ? new Date(res.data.createTime).toISOString().split('T')[0] : '',
+        };
+      } catch (error) {
+        console.error('获取用户详情失败:', error);
+        this.$message.error('获取用户详情失败，请重试');
+      }
+    }
+  },
+  mounted() {
+    const id = this.$route.params.id;
+    if (id) {
+      this.fetchUserDetail(id);
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
 .user_info-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .user_info-data {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 </style>

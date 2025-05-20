@@ -42,3 +42,14 @@ export const DEPT_STATUS_MAP = {
     '1': '启用',
     '0': '禁用'
 };
+
+export const GENDER_MAP = {
+    '1': '男',
+    '0': '女',
+    '2': '未知'
+};
+
+export const USER_STATUS_MAP = {
+    '1': '启用',
+    '0': '禁用'
+};

@@ -76,3 +76,12 @@ Vue.filter('deptStatusText', status => {
     }
     return deptStatusMap[status] || '未知'
 })
+
+
+Vue.filter('userStatusText', status => {
+    const userStatusMap = {
+        1: '启用',
+        0: '禁用',
+    }
+    return userStatusMap[status] || '未知'
+})

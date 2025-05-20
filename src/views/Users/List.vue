@@ -1,111 +1,110 @@
 <template>
-    <div class="user_list-container">
-        <div class="user_list-title">
-            <h4>用户管理</h4>
-            <FWCButton :btnValue=btnValue @button-click="handleClicked"></FWCButton>
-        </div>
-        <div class="user_list-data">
-            <el-table :data="userEntryData" style="width: 100%" @row-click="queryUser">
-                <el-table-column prop="id" label="ID" width="80">
-                </el-table-column>
-                <el-table-column prop="date" label="日期" width="180">
-                </el-table-column>
-                <el-table-column prop="name" label="姓名" width="100">
-                </el-table-column>
-                <el-table-column prop="gender" label="性别" width="100">
-                    <template v-slot="scope">
-                        {{ scope.row.gender | genderText }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="phone" label="手机" width="150">
-                </el-table-column>
-                <el-table-column prop="dept" label="部门" width="100">
-                </el-table-column>
-                <el-table-column prop="position" label="岗位" width="100">
-                </el-table-column>
-                <el-table-column prop="address" label="住址">
-                </el-table-column>
-            </el-table>
-        </div>
+  <div class="user_list-container">
+    <div class="user_list-title">
+      <h4>用户管理</h4>
+      <FWCButton :btnValue=btnValue @button-click="handleClicked"></FWCButton>
     </div>
+    <div style="margin-top:50px">
+      <el-col :span="5">
+        <el-input  size="small" prefix-icon="el-icon-search" v-model="userQueryKeyword" placeholder="请输入名称、手机号或邮箱" @blur="queryUsersByKeyword"></el-input>
+      </el-col>
+      <el-table :data="userData" style="width: 100%" @row-click="queryUserInfo">
+        <el-table-column prop="id" label="ID">
+        </el-table-column>
+        <el-table-column prop="name" label="用户名称">
+        </el-table-column>
+        <el-table-column prop="gender" label="性别">
+          <template v-slot="scope">
+            {{ scope.row.status | genderText }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" label="手机">
+        </el-table-column>
+        <el-table-column prop="deptName" label="部门">
+        </el-table-column>
+        <el-table-column prop="entryDate" label="入职日期">
+        </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template v-slot="scope">
+            {{ scope.row.status | userStatusText }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="mark" label="备注">
+        </el-table-column>
+        <el-table-column prop="createTime" label="创建日期">
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 
 <script>
 import FWCButton from '../../components/FWCButton.vue'
+import {getUsers, getUserByKeyword} from "@/api/user";
 export default {
-    components: {
-        FWCButton
-    },
-    data() {
-        return {
-            btnValue: '创建用户',
-            userEntryData: [{
-                id: '1',
-                date: '2016-05-02',
-                name: '王小虎',
-                gender: 1,
-                phone: '17521279833',
-                dept: '研发部',
-                position: '后端研发',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                id: '2',
-                date: '2016-05-02',
-                name: '王小虎',
-                gender: 0,
-                phone: '17521279833',
-                dept: '研发部',
-                position: '后端研发',
-                address: '上海市普陀区金沙江路 1518 弄'
-            },
-            {
-                id: '3',
-                date: '2016-05-02',
-                name: '王小虎',
-                gender: 1,
-                phone: '17521279833',
-                dept: '研发部',
-                position: '后端研发',
-                address: '上海市普陀区金沙江路 1518 弄'
-            },
-            {
-                id: '4',
-                date: '2016-05-02',
-                name: '王小虎',
-                gender: 0,
-                phone: '17521279833',
-                dept: '研发部',
-                position: '后端研发',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }]
-        }
-    },
-    methods: {
-        handleClicked() {
-            this.$router.push({ name: 'UsersAdd' })
-        },
-        queryUser(row) {
-            this.$router.push({
-                name: 'UsersInfo',
-                params: { id: row.id }
-            })
-        }
+  components: {
+    FWCButton,
+  },
+  data() {
+    return {
+      btnValue: '创建用户',
+      userQueryKeyword:'',
+      userData: [],
     }
+  },
+  methods: {
+    handleClicked() {
+      this.$router.push({ name: 'UsersAdd' })
+    },
+    queryUserInfo(row) {
+      this.$router.push({
+        name: 'UsersInfo',
+        params: { id: row.id }
+      })
+    },
+    async fetchUserData() {
+      try {
+        const res = await getUsers();
+        this.userData = res.data.map(item => ({
+          ...item,
+          entryDate: new Date(item.entryDate).toISOString().split('T')[0],
+          createTime: new Date(item.createTime).toISOString().split('T')[0]
+        }));
+      } catch (error) {
+        console.log('get users failed:', error);
+      }
+    },
+    async queryUsersByKeyword() {
+      try {
+        const res = await getUserByKeyword(this.userQueryKeyword);
+        this.userData = res.data.map(item => ({
+          ...item,
+          entryDate: new Date(item.entryDate).toISOString().split('T')[0],
+          createTime: new Date(item.createTime).toISOString().split('T')[0]
+        }));
+      } catch (error) {
+        console.log('get users failed:', error);
+      }
+    }
+  },
+  mounted() {
+    this.fetchUserData();
+  }
 }
 </script>
 
 <style scoped lang="scss">
 .user_list-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .user_list-data {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 ::v-deep .el-table__row {
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>

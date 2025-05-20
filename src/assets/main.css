@@ -11,4 +11,19 @@
     font-family: Inter, "Helvetica Neue", Helvetica, "PingFang SC",
       "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
-  
+
+
+/* el-select */
+.el-select {
+  width: 200px;
+}
+
+/* el-date-picker */
+.el-date-picker {
+  width: 200px;
+}
+
+/* el-input */
+.el-input {
+  width: 200px;
+}

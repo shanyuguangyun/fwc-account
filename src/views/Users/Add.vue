@@ -5,58 +5,73 @@
             <FWCButton :btnValue=btnValue @button-click="handleClicked"></FWCButton>
         </div>
         <div class="user_add-form">
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+            <el-form :model="userForm" :rules="rules" ref="userForm" label-width="100px" class="demo-userForm"
                 size="mini">
                 <el-form-item label="姓名" prop="name">
                     <el-col :span="11">
-                        <el-input v-model="ruleForm.name"></el-input>
+                        <el-input v-model="userForm.name" placeholder="请输入姓名"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="性别" prop="gender" width="100px">
-                    <el-radio-group v-model="ruleForm.gender">
-                        <el-radio label="男"></el-radio>
-                        <el-radio label="女"></el-radio>
-                        <el-radio label="未知"></el-radio>
-                    </el-radio-group>
+                  <el-radio-group v-model="userForm.gender">
+                    <el-radio v-for="(t,i) in genderList" :key="i" :label="t.value">{{t.label}}</el-radio>
+                  </el-radio-group>
                 </el-form-item>
                 <el-form-item label="手机" prop="phone">
                     <el-col :span="11">
-                        <el-input v-model="ruleForm.phone"></el-input>
+                        <el-input v-model="userForm.phone" placeholder="请输入手机号"></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="部门" prop="dept">
-                    <el-select v-model="ruleForm.dept" placeholder="请选择部门">
-                        <el-option label="信息部" value="xinxi"></el-option>
-                        <el-option label="总裁办" value="zongcaiban"></el-option>
+                <el-form-item label="住址" prop="address">
+                  <el-col :span="11">
+                    <el-input v-model="userForm.address" placeholder="请输入住址"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="入职日期" prop="entryDate" >
+                  <el-col :span="11">
+                      <el-date-picker type="date" placeholder="选择日期" v-model="userForm.entryDate"
+                                      style="width: 100%;"></el-date-picker>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="出生日期" prop="birthday" >
+                  <el-col :span="11">
+                      <el-date-picker type="date" placeholder="选择日期" v-model="userForm.birthday"
+                                      style="width: 100%;"></el-date-picker>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="部门" prop="deptId">
+                    <el-select v-model="userForm.deptId" placeholder="请选择部门">
+                        <el-option v-for="(t, i) in deptList" :key="i" :label="t.name" :value="t.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="岗位" prop="position">
-                    <el-select v-model="ruleForm.position" placeholder="请选择岗位">
-                        <el-option label="后端开发工程师" value="houduan"></el-option>
-                        <el-option label="全栈开发工程师" value="quanzhan"></el-option>
-                    </el-select>
+                  <el-select v-model="userForm.position" placeholder="请选择岗位">
+                    <el-option v-for="(t, i) in positionList" :key="i" :label="t.name" :value="t.id"></el-option>
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="住址" prop="address">
-                    <el-col :span="11">
-                        <el-input v-model="ruleForm.address"></el-input>
-                    </el-col>
+                <el-form-item label="邮箱" prop="email">
+                  <el-col :span="11">
+                    <el-input v-model="userForm.email" placeholder="请输入邮箱"></el-input>
+                  </el-col>
                 </el-form-item>
-                <el-form-item label="入职日期" required>
-                    <el-col :span="11">
-                        <el-form-item prop="entryDate">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.entryDate"
-                                style="width: 100%;"></el-date-picker>
-                        </el-form-item>
-                    </el-col>
+                <el-form-item label="密码" prop="password">
+                  <el-col :span="11">
+                    <el-input v-model="userForm.password" placeholder="请输入密码，默认88888888"></el-input>
+                  </el-col>
                 </el-form-item>
-                <el-form-item label="备注" prop="desc">
+                <el-form-item label="状态" prop="status" width="100px">
+                  <el-radio-group v-model="userForm.status">
+                    <el-radio v-for="(t,i) in statusList" :key="i" :label="t.value">{{t.label}}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="备注" prop="mark">
                     <el-col :span="11">
-                        <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+                        <el-input type="textarea" v-model="userForm.mark"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item>
-                    <el-button class="el-button--black" @click="createUser('ruleForm')">立即创建</el-button>
-                    <el-button @click="resetUser('ruleForm')">重置</el-button>
+                    <el-button class="el-button--black" @click="createUser('userForm')">立即创建</el-button>
+                    <el-button @click="resetUser('userForm')">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -65,6 +80,9 @@
 
 <script>
 import FWCButton from '../../components/FWCButton.vue'
+import {GENDER_MAP, USER_STATUS_MAP} from '../../enums/enums';
+import {getParentDeptData} from '../../api/dept';
+import {createUser} from "@/api/user";
 export default {
     components: {
         FWCButton
@@ -72,13 +90,25 @@ export default {
     data() {
         return {
             btnValue: '返回',
-            ruleForm: {
+            // 强制转换为数组并维持顺序
+            genderList: ['1','0','2'].map(key => ({value: key, label: GENDER_MAP[key]})),
+            deptList:[],
+            positionList: [],
+            statusList: ['1','0'].map(key => ({value: key, label: USER_STATUS_MAP[key]})),
+            userForm: {
                 name: '',
-                gender: '',
+                gender: '1',
                 phone: '',
-                dept: '',
+                email: '',
+                deptId: '',
+                deptName: '',
                 position: '',
-                entryDate: '',
+                address: '',
+                birthday: '1990-01-01',
+                entryDate: new Date(),
+                mark: '',
+                password: '',
+                status: '1',
             },
             rules: {
                 name: [
@@ -92,38 +122,50 @@ export default {
                     { required: true, message: '请输入手机号码', trigger: 'blur' },
                     { min: 11, max: 11, message: '手机号码为11个字符', trigger: 'blur' }
                 ],
-                dept: [
-                    { required: true, message: '请选择部门', trigger: 'change' }
-                ],
-                position: [
-                    { required: true, message: '请选择岗位', trigger: 'change' }
-                ],
                 address: [
                     { required: true, message: '请输入住址', trigger: 'blur' }
                 ],
                 entryDate: [
-                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                    { type: 'date', required: true, message: '请选择入职日期', trigger: 'change' }
+                ],
+                birthday: [
+                  { type: 'date', required: true, message: '请选择出生日期', trigger: 'change' }
                 ],
             }
         }
     },
     methods: {
-        createUser(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    alert('submit!');
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        },
-        resetUser(formName) {
-            this.$refs[formName].resetFields();
-        },
-        handleClicked() {
-            this.$router.back();
-        }
+      async createUser(formName) {
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            try {
+              const response = await createUser(this.userForm);
+              console.log('创建成功:', response.data);
+              this.$message.success('用户创建成功');
+              this.$router.back();
+            } catch (error) {
+              console.error('创建失败:', error);
+              this.$message.error('用户创建失败，请重试');
+            }
+          } else {
+            console.log('表单验证失败');
+            return false;
+          }
+        });
+      },
+      resetUser(formName) {
+          this.$refs[formName].resetFields();
+      },
+      handleClicked() {
+          this.$router.back();
+      },
+      async getDepts() {
+          const res = await getParentDeptData();
+          this.deptList = res.data;
+      }
+    },
+    mounted() {
+        this.getDepts();
     }
 }
 </script>
