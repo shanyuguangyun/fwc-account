@@ -15,7 +15,7 @@
         </el-table-column>
         <el-table-column prop="gender" label="性别">
           <template v-slot="scope">
-            {{ scope.row.status | genderText }}
+            {{ scope.row.gender | genderText }}
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机">

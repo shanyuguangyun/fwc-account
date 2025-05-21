@@ -54,6 +54,12 @@ const routes = [
         name: "UsersInfo",
         meta: { title: '用户详情', menuHide: true },
         component: () => import('../views/Users/Info.vue'),
+      },
+      {
+        path: "update/:id?",
+        name: "UsersUpdate",
+        meta: { title: '修改用户', menuHide: true },
+        component: () => import('../views/Users/Update.vue'),
       }
     ],
   },

@@ -166,6 +166,11 @@ export default {
     },
     mounted() {
         this.getDepts();
+    },
+    watch: {
+      'userForm.deptId'(val) {
+        this.userForm.deptName = this.deptList.find(item => item.id === val).name;
+      }
     }
 }
 </script>

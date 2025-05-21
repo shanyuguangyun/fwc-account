@@ -28,7 +28,7 @@
             <i class="el-icon-user"></i>
             性别
           </template>
-          {{ userData.gender }}
+          {{ userData.gender | genderText }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
@@ -114,7 +114,7 @@ export default {
         name: '',
         type: 0,
         status: '0',
-        description: '',
+        mark: '',
         createTime: '',
         updateTime: '',
       }
